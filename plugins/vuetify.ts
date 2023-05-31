@@ -7,6 +7,28 @@ export default defineNuxtPlugin((NuxtApp) => {
     ssr: true,
     components,
     directives,
+    defaults: {
+      VAppBar: {
+        elevation: 0,
+      },
+      VCombobox: {
+        variant: "outlined",
+        height: 38,
+        rounded: "lg",
+        size: "small",
+      },
+      VBtn: {
+        variant: "flat",
+        height: 38,
+        rounded: "lg",
+        size: "small",
+      },
+      VTextField: {
+        color: "primary",
+        variant: "outlined",
+        density: "comfortable",
+      },
+    },
   });
 
   NuxtApp.vueApp.use(vuetify);

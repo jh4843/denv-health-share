@@ -4,7 +4,7 @@
       <VCol cols="12" md="6" lg="5" sm="6">
         <VRow no-gutters align="center" justify="center">
           <VCol cols="12" md="6">
-            <h1>Sign In</h1>
+            <h1>Sign Up</h1>
             <p class="text-medium-emphasis">
               Enter your details to get started
             </p>
@@ -24,12 +24,10 @@
                 />
               </div>
               <div>
-                <label class="label text-grey-darken-2" for="userId"
-                  >Class</label
-                >
+                <label class="label text-grey-darken-2" for="id">ID</label>
                 <VTextField
                   :rules="[ruleRequired, ruleUserId]"
-                  v-model="userId"
+                  v-model="id"
                   prepend-inner-icon="fluent:person-24-regular"
                   id="id"
                   name="id"
@@ -41,28 +39,28 @@
                 >
                 <VTextField
                   :rules="[ruleRequired, rulePassLen]"
+                  type="password"
                   v-model="password"
                   prepend-inner-icon="fluent:password-20-regular"
                   id="password"
                   name="password"
-                  type="password"
                 />
               </div>
               <div class="mt-5">
                 <VBtn
                   type="submit"
                   block
-                  min-height="44"
+                  min-height="45"
                   class="gradient primary"
-                  >Sign In</VBtn
+                  >Create Account</VBtn
                 >
               </div>
             </VForm>
             <p class="text-body-2 mt-10">
               <span
-                >Don't have an account?
-                <NuxtLink to="/signup" class="font-weight-bold text-primary"
-                  >Sign Up</NuxtLink
+                >Already have an account?
+                <NuxtLink to="/" class="font-weight-bold text-primary"
+                  >Sign In</NuxtLink
                 ></span
               >
             </p>
@@ -75,10 +73,10 @@
 
 <script setup lang="ts">
 const userClass = ref("");
-const userId = ref("");
+const id = ref("");
 const password = ref("");
 
-const { rulePassLen, ruleRequired, ruleUserId } = useFormRules();
+const { ruleEmail, rulePassLen, ruleRequired, ruleUserId } = useFormRules();
 
 const submit = async () => {};
 </script>
