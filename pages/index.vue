@@ -5,9 +5,7 @@
         <VRow no-gutters align="center" justify="center">
           <VCol cols="12" md="6">
             <h1>Sign In</h1>
-            <p class="text-medium-emphasis">
-              Enter your details to get started
-            </p>
+            <p class="text-medium-emphasis">Enter your account information</p>
 
             <VForm @submit.prevent="submit" class="mt-7">
               <div>
@@ -17,20 +15,18 @@
                 <VCombobox
                   :rules="[ruleRequired]"
                   v-model="userClass"
-                  :items="['Administrator', 'User']"
-                  prepend-inner-icon="fluent:person-24-regular"
+                  :items="myTypes.getKeyListUserClass()"
+                  prepend-inner-icon="mdi-license"
                   id="class"
                   name="class"
                 />
               </div>
               <div>
-                <label class="label text-grey-darken-2" for="userId"
-                  >Class</label
-                >
+                <label class="label text-grey-darken-2" for="userId">ID</label>
                 <VTextField
                   :rules="[ruleRequired, ruleUserId]"
                   v-model="userId"
-                  prepend-inner-icon="fluent:person-24-regular"
+                  prepend-inner-icon="mdi-account"
                   id="id"
                   name="id"
                 />
@@ -42,7 +38,7 @@
                 <VTextField
                   :rules="[ruleRequired, rulePassLen]"
                   v-model="password"
-                  prepend-inner-icon="fluent:password-20-regular"
+                  prepend-inner-icon="mdi-lock"
                   id="password"
                   name="password"
                   type="password"
@@ -74,7 +70,11 @@
 </template>
 
 <script setup lang="ts">
-const userClass = ref("");
+import * as myTypes from "~/types";
+
+const userClass = ref(
+  myTypes.getTextUserClass(myTypes.eUserClass.Administrator)
+);
 const userId = ref("");
 const password = ref("");
 

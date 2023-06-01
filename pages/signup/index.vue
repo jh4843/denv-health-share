@@ -17,8 +17,8 @@
                 <VCombobox
                   :rules="[ruleRequired]"
                   v-model="userClass"
-                  :items="['Administrator', 'User']"
-                  prepend-inner-icon="fluent:person-24-regular"
+                  :items="myTypes.getKeyListUserClass()"
+                  prepend-inner-icon="mdi-license"
                   id="class"
                   name="class"
                 />
@@ -28,7 +28,7 @@
                 <VTextField
                   :rules="[ruleRequired, ruleUserId]"
                   v-model="id"
-                  prepend-inner-icon="fluent:person-24-regular"
+                  prepend-inner-icon="mdi-account"
                   id="id"
                   name="id"
                 />
@@ -41,7 +41,7 @@
                   :rules="[ruleRequired, rulePassLen]"
                   type="password"
                   v-model="password"
-                  prepend-inner-icon="fluent:password-20-regular"
+                  prepend-inner-icon="mdi-lock"
                   id="password"
                   name="password"
                 />
@@ -72,11 +72,16 @@
 </template>
 
 <script setup lang="ts">
-const userClass = ref("");
+import * as myTypes from "~/types";
+
+const userClass = ref(
+  myTypes.getTextUserClass(myTypes.eUserClass.Administrator)
+);
+
 const id = ref("");
 const password = ref("");
 
-const { ruleEmail, rulePassLen, ruleRequired, ruleUserId } = useFormRules();
+const { rulePassLen, ruleRequired, ruleUserId } = useFormRules();
 
 const submit = async () => {};
 </script>
