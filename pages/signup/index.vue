@@ -1,8 +1,8 @@
 <template>
-  <VContainer fluid class="fill-height">
+  <VContainer fluid class="account-bg-img fill-height" style="min-height: 900px">
     <VRow no-gutters align="center" justify="center" class="fill-height">
-      <VCol cols="12" md="6" lg="5" sm="6">
-        <VRow no-gutters align="center" justify="center">
+      <VCol class="bg-white" cols="12" md="6" lg="5" sm="6" style="height:65%" align-items="center">
+        <VRow no-gutters align="center" justify="center" class="fill-height">
           <VCol cols="12" md="6">
             <h1>Sign Up</h1>
             <p class="text-medium-emphasis">
