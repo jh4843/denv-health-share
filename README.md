@@ -10,8 +10,10 @@
   - firebase
 - 환경 구성
   - Front-end
+    - Ui Framework: vuetify3
     - Test: chrome (v 113.0.5672.127)
   - Back-end
+    - function: firebase function
     - DB: Cloud Firestore
     - Storage: Firebase Cloud Storage
 

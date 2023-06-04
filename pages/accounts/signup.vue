@@ -1,7 +1,18 @@
 <template>
-  <VContainer fluid class="account-bg-img fill-height" style="min-height: 900px">
+  <VContainer
+    fluid
+    class="account-bg-img fill-height"
+    style="min-height: 900px"
+  >
     <VRow no-gutters align="center" justify="center" class="fill-height">
-      <VCol class="bg-white" cols="12" md="6" lg="5" sm="6" style="height:65%" align-items="center">
+      <VCol
+        cols="12"
+        md="6"
+        lg="5"
+        sm="6"
+        style="height: 65%"
+        align-items="center"
+      >
         <VRow no-gutters align="center" justify="center" class="fill-height">
           <VCol cols="12" md="6">
             <h1>Sign Up</h1>
@@ -16,9 +27,11 @@
                 >
                 <VCombobox
                   :rules="[ruleRequired]"
-                  v-model="userClass"
-                  :items="myTypes.getKeyListUserClass()"
+                  v-model="userItem"
+                  :items="myTypes.getUserItemList()"
                   prepend-inner-icon="mdi-license"
+                  item-title="text"
+                  item-value="id"
                   id="class"
                   name="class"
                 />
@@ -52,6 +65,7 @@
                   block
                   min-height="45"
                   class="gradient primary"
+                  :onclick="onSignUpHandler"
                   >Create Account</VBtn
                 >
               </div>
@@ -59,7 +73,9 @@
             <p class="text-body-2 mt-10">
               <span
                 >Already have an account?
-                <NuxtLink to="/" class="font-weight-bold text-primary"
+                <NuxtLink
+                  to="/accounts/signin"
+                  class="font-weight-bold text-primary"
                   >Sign In</NuxtLink
                 ></span
               >
@@ -74,12 +90,27 @@
 <script setup lang="ts">
 import * as myTypes from "~/types";
 
-const userClass = ref(
-  myTypes.getTextUserClass(myTypes.eUserClass.Administrator)
+const userItem = ref(
+  myTypes.getUserClassItem(myTypes.eUserClass.Administrator)
 );
 
 const id = ref("");
 const password = ref("");
+
+const onSignUpHandler = async (event: Event) => {
+  console.log("on Clicked: ", event);
+
+  const { data: res } = await useAsyncData("signUp", () =>
+    $fetch("/api/accounts/signup", {
+      method: "POST",
+      body: {
+        userClass: userItem.value.id,
+        userId: "",
+        password: "",
+      } as myTypes.iUserInfo,
+    })
+  );
+};
 
 const { rulePassLen, ruleRequired, ruleUserId } = useFormRules();
 

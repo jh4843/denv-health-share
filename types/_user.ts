@@ -1,21 +1,43 @@
+export interface iUserInfo {
+  userClass: eUserClass;
+  userId: string;
+  password: string;
+}
+
+export interface iUserClassItem {
+  id: eUserClass;
+  text: string;
+}
+
 export enum eUserClass {
   Administrator = 0,
   User = 1,
 }
 
-export function getKeyListUserClass(): string[] {
-  var keys: string[] = [];
-  for (var cls in eUserClass) {
-    if (typeof eUserClass[cls] === "number") keys.push(cls);
-  }
+export function getUserItemList(): iUserClassItem[] {
+  var items: iUserClassItem[] = Object.keys(eUserClass)
+    .filter((v) => isNaN(Number(v)))
+    .map((name) => {
+      return {
+        id: eUserClass[name as keyof typeof eUserClass],
+        text: name,
+      };
+    });
 
-  console.log(keys);
-
-  return keys;
+  return items;
 }
 
-export function getTextUserClass(userClass: eUserClass) {
+export function getUserClassItem(userClass: eUserClass): iUserClassItem {
   const indexOfS = Object.values(eUserClass).indexOf(userClass);
 
-  return Object.keys(eUserClass)[indexOfS];
+  return {
+    id: userClass,
+    text: Object.keys(eUserClass)[indexOfS],
+  };
+}
+
+export function getValueUserClass(
+  userClass: keyof typeof eUserClass
+): eUserClass {
+  return eUserClass[userClass];
 }
