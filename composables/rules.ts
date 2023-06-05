@@ -23,7 +23,7 @@ export const useFormRules = () => {
 
     ruleUserId: (v: string): boolean | string => {
       if (v !== undefined) {
-        const reg = /^[a-zA-Z]+[a-zA-Z\-0-9]{8,30}$/;
+        const reg = /^[a-zA-Z]+[a-zA-Z\-0-9]{4,30}$/;
         if (v.match(reg)) {
           return true;
         }

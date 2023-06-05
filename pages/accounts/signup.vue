@@ -40,7 +40,7 @@
                 <label class="label text-grey-darken-2" for="id">ID</label>
                 <VTextField
                   :rules="[ruleRequired, ruleUserId]"
-                  v-model="id"
+                  v-model="userId"
                   prepend-inner-icon="mdi-account"
                   id="id"
                   name="id"
@@ -65,7 +65,7 @@
                   block
                   min-height="45"
                   class="gradient primary"
-                  :onclick="onSignUpHandler"
+                  @click="onClickSignUpButton"
                   >Create Account</VBtn
                 >
               </div>
@@ -94,23 +94,21 @@ const userItem = ref(
   myTypes.getUserClassItem(myTypes.eUserClass.Administrator)
 );
 
-const id = ref("");
+const userId = ref("");
 const password = ref("");
 
-const onSignUpHandler = async (event: Event) => {
-  console.log("on Clicked: ", event);
+const onClickSignUpButton = (event: Event) => {
+  let userInfo:myTypes.iUserInfo = {
+    userClass: userItem.value.id,
+    userId: userId.value,
+    password: password.value,
+  }
+  let res = signUpUser(userInfo);
 
-  const { data: res } = await useAsyncData("signUp", () =>
-    $fetch("/api/accounts/signup", {
-      method: "POST",
-      body: {
-        userClass: userItem.value.id,
-        userId: "",
-        password: "",
-      } as myTypes.iUserInfo,
-    })
-  );
-};
+  console.log("onClickSignUpButton: ", res);
+}
+
+const { signUpUser } = useFirebaseUser();
 
 const { rulePassLen, ruleRequired, ruleUserId } = useFormRules();
 

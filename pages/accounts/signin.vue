@@ -63,6 +63,7 @@
                   block
                   min-height="44"
                   class="gradient primary"
+                  @click="onClickSignInButton"
                   >Sign In</VBtn
                 >
               </div>
@@ -95,16 +96,31 @@ const userClassId = computed(() => console.log(userItem.value.id));
 const userId = ref("");
 const password = ref("");
 
-const { data: res } = await useAsyncData("signIn", () =>
-  $fetch("/api/accounts/signin", {
-    method: "get",
-    body: {
-      userClass: userItem.value.id,
-      userId: userId.value,
-      password: password.value,
-    } as myTypes.iUserInfo,
-  })
-);
+const onClickSignInButton = (event: Event) => {
+  let userInfo:myTypes.iUserInfo = {
+    userClass: userItem.value.id,
+    userId: userId.value,
+    password: password.value,
+  }
+  let res = signInUser(userInfo);
+
+  console.log("onClickSignInButton: ", res);
+}
+
+
+
+// const { data: res } = await useAsyncData("signIn", () =>
+//   $fetch("/api/accounts/signin", {
+//     method: "get",
+//     body: {
+//       userClass: userItem.value.id,
+//       userId: userId.value,
+//       password: password.value,
+//     } as myTypes.iUserInfo,
+//   })
+// );
+
+const { signInUser } = useFirebaseUser();
 
 const { rulePassLen, ruleRequired, ruleUserId } = useFormRules();
 
