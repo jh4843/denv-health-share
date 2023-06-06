@@ -1,7 +1,7 @@
 <template>
   <VContainer
     fluid
-    class="account-bg-img fill-height"
+    class="bg-account-img fill-height"
     style="min-height: 900px"
   >
     <VRow no-gutters align="center" justify="center" class="fill-height">
@@ -98,15 +98,15 @@ const userId = ref("");
 const password = ref("");
 
 const onClickSignUpButton = (event: Event) => {
-  let userInfo:myTypes.iUserInfo = {
+  let userInfo: myTypes.iUserInfo = {
     userClass: userItem.value.id,
     userId: userId.value,
     password: password.value,
-  }
+  };
   let res = signUpUser(userInfo);
 
   console.log("onClickSignUpButton: ", res);
-}
+};
 
 const { signUpUser } = useFirebaseUser();
 

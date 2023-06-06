@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 export default defineNuxtPlugin((nuxtApp) => {
   const firebaseConfig = {
@@ -12,9 +13,12 @@ export default defineNuxtPlugin((nuxtApp) => {
   };
 
   const app = initializeApp(firebaseConfig);
-
   const firestore = getFirestore(app);
 
-  nuxtApp.vueApp.provide('firestore', firestore)
-  nuxtApp.provide('firestore', firestore)
+  nuxtApp.vueApp.provide("firestore", firestore);
+  nuxtApp.provide("firestore", firestore);
+
+  const firestorage = getStorage(app);
+  nuxtApp.vueApp.provide("firestorage", firestorage);
+  nuxtApp.provide("firestorage", firestorage);
 });

@@ -1,7 +1,7 @@
 <template>
   <VContainer
     fluid
-    class="account-bg-img fill-height"
+    class="bg-account-img fill-height"
     style="min-height: 900px"
   >
     <VRow no-gutters align="center" justify="center" class="fill-height">
@@ -19,21 +19,6 @@
             <p class="text-medium-emphasis">Enter your account information</p>
 
             <VForm @submit.prevent="submit" class="mt-7">
-              <div>
-                <label class="label text-grey-darken-2" for="userClass"
-                  >Class</label
-                >
-                <VCombobox
-                  :rules="[ruleRequired]"
-                  v-model="userItem"
-                  :items="myTypes.getUserItemList()"
-                  prepend-inner-icon="mdi-license"
-                  item-title="text"
-                  item-value="id"
-                  id="class"
-                  name="class"
-                />
-              </div>
               <div>
                 <label class="label text-grey-darken-2" for="userId">ID</label>
                 <VTextField
@@ -92,22 +77,23 @@ const userItem = ref(
   myTypes.getUserClassItem(myTypes.eUserClass.Administrator)
 );
 
-const userClassId = computed(() => console.log(userItem.value.id));
 const userId = ref("");
 const password = ref("");
 
-const onClickSignInButton = (event: Event) => {
-  let userInfo:myTypes.iUserInfo = {
-    userClass: userItem.value.id,
+const onClickSignInButton = async (event: Event) => {
+  let userInfo: myTypes.iUserInfo = {
     userId: userId.value,
     password: password.value,
+  };
+  let isSignIn = await signInUser(userInfo);
+
+  if (isSignIn) {
+    const rout = useRouter();
+    rout.push({ path: "/main" });
   }
-  let res = signInUser(userInfo);
 
-  console.log("onClickSignInButton: ", res);
-}
-
-
+  console.log("onClickSignInButton: ", isSignIn);
+};
 
 // const { data: res } = await useAsyncData("signIn", () =>
 //   $fetch("/api/accounts/signin", {
