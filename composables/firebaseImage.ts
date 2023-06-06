@@ -8,12 +8,22 @@ import {
   where,
   Firestore,
 } from "firebase/firestore";
-import { ref } from "firebase/storage";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 
 export const useFirebaseImage = () => {
   return {
-    uploadImages: async (imgInfos: FileList) => {
-      const { $firestorage, $firestore } = useNuxtApp();
+    uploadImages: async (files: Array<File>) => {
+      const storage = getStorage();
+
+      for (const f of files) {
+        const fileName = f.name;
+        const fileStoragePath = "/denv-hs/" + fileName;
+        const storageRef = ref(storage, fileStoragePath);
+
+        const mountainsRef = uploadBytes(storageRef, f);
+
+        console.log("result: ", mountainsRef, fileStoragePath);
+      }
     },
 
     signUpUser: async (userInfo: myTypes.iUserInfo) => {
