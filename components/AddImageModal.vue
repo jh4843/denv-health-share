@@ -4,7 +4,7 @@
       <VCombobox
         v-model="excerciseType"
         :items="myTypes.getExcerciseTypeList()"
-        prepend-inner-icon="mdi-license"
+        prepend-inner-icon="mdi-run"
         item-title="text"
         item-value="id"
         id="class"

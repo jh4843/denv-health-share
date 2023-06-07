@@ -1,12 +1,13 @@
 <template>
   <VContainer fluid class="bg-main-img fill-height">
-    <VCol>
-      <VCol>
-        <VCarousel show-arrows="hover" height="200"></VCarousel>
-        <VCarousel show-arrows="hover" height="200"></VCarousel>
-        <VCarousel show-arrows="hover" height="200"></VCarousel>
-        <VCarousel show-arrows="hover" height="200"></VCarousel>
-        <VCarousel show-arrows="hover" height="200"></VCarousel>
+    <VCol class="fill-height">
+      <VCol class="fill-height">
+        <DisplayItemsGroup class="h-auto"></DisplayItemsGroup>
+        <DisplayItemsGroup class="h-auto"></DisplayItemsGroup>
+        <DisplayItemsGroup class="h-auto"></DisplayItemsGroup>
+        <DisplayItemsGroup class="h-auto"></DisplayItemsGroup>
+        <DisplayItemsGroup class="h-auto"></DisplayItemsGroup>
+        <DisplayItemsGroup class="h-auto"></DisplayItemsGroup>
       </VCol>
     </VCol>
   </VContainer>
