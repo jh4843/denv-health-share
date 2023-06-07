@@ -1,5 +1,5 @@
 export interface iUserInfo {
-  userClass?: eUserClass;
+  userClass: eUserClass;
   userId: string;
   password: string;
 }

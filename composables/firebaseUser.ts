@@ -13,7 +13,7 @@ export const useFirebaseUser = () => {
     isSignedIn: () => {
       let id = localStorage.getItem("userId");
 
-      if(id == undefined || id == null) {
+      if (id == undefined || id == null) {
         return false;
       }
       return true;
@@ -22,10 +22,14 @@ export const useFirebaseUser = () => {
     getUserId: () => {
       let id = localStorage.getItem("userId");
 
-      if(id == undefined || id == null) {
+      if (id == undefined || id == null) {
         return undefined;
       }
       return id;
+    },
+
+    getUserClass: (): myTypes.eUserClass => {
+      return Number(localStorage.getItem("userClass"));
     },
 
     signInUser: async (userInfo: myTypes.iUserInfo) => {
@@ -46,7 +50,9 @@ export const useFirebaseUser = () => {
       console.log("snapshot", snapshot.size, "docs: ", snapshot.docs);
 
       if (snapshot.size > 0) {
-        localStorage.setItem("userId", userInfo.userId);
+        const dbUserInfo = snapshot.docs.at(0)!.data();
+        localStorage.setItem("userId", dbUserInfo.userId);
+        localStorage.setItem("userClass", dbUserInfo.userClass!.toString());
 
         const router = useRouter();
         router.push({ path: "/main" });
@@ -59,6 +65,7 @@ export const useFirebaseUser = () => {
 
     signOutUser: () => {
       localStorage.removeItem("userId");
+      localStorage.removeItem("userClass");
 
       console.log("signOut");
 
@@ -71,9 +78,19 @@ export const useFirebaseUser = () => {
 
       const colRef = collection($firestore as Firestore, "accounts");
 
-      const docRef = await addDoc(colRef, userInfo);
+      const snapshot = query(colRef, where("userId", "==", userInfo.userId));
 
-      return docRef;
+      const docs = await getDocs(snapshot);
+
+      console.log("snapshot", docs.size, "docs: ", docs.docs);
+
+      if (docs.size > 0) {
+        console.log("failed to register userID: " + userInfo.userId, snapshot);
+        return false;
+      } else {
+        await addDoc(colRef, userInfo);
+        return true;
+      }
     },
   };
 };

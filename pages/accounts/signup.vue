@@ -27,7 +27,7 @@
                 >
                 <VCombobox
                   :rules="[ruleRequired]"
-                  v-model="userItem"
+                  v-model="userClass"
                   :items="myTypes.getUserItemList()"
                   prepend-inner-icon="mdi-license"
                   item-title="text"
@@ -90,7 +90,7 @@
 <script setup lang="ts">
 import * as myTypes from "~/types";
 
-const userItem = ref(
+const userClass = ref(
   myTypes.getUserClassItem(myTypes.eUserClass.Administrator)
 );
 
@@ -99,7 +99,7 @@ const password = ref("");
 
 const onClickSignUpButton = (event: Event) => {
   let userInfo: myTypes.iUserInfo = {
-    userClass: userItem.value.id,
+    userClass: userClass.value.id,
     userId: userId.value,
     password: password.value,
   };

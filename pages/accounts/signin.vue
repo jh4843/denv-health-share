@@ -82,6 +82,7 @@ const password = ref("");
 
 const onClickSignInButton = async (event: Event) => {
   let userInfo: myTypes.iUserInfo = {
+    userClass: myTypes.eUserClass.Administrator,
     userId: userId.value,
     password: password.value,
   };

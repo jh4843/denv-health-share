@@ -12,18 +12,33 @@
   </VContainer>
   <VBottomNavigation color="teal" grow elevation="0">
     <VBtn @click="onClickAddBtn">
-      <VIcon class="rounded-circle" icon="mdi-plus-box" size="x-large" color="blue-darken-2"></VIcon>
+      <VIcon
+        class="rounded-circle"
+        icon="mdi-plus-box"
+        size="x-large"
+        color="blue-darken-2"
+      ></VIcon>
 
       Add
       <AddImageModal v-model="isOpenAddDialog"></AddImageModal>
     </VBtn>
     <VBtn @click="onClickLogoutBtn">
-      <VIcon class="rounded-circle" icon="mdi-logout-variant" size="x-large" color="blue-grey-darken-3"></VIcon>
+      <VIcon
+        class="rounded-circle"
+        icon="mdi-logout-variant"
+        size="x-large"
+        color="blue-grey-darken-3"
+      ></VIcon>
 
       Sign Out
     </VBtn>
-    <VBtn>
-      <VIcon class="rounded-circle" icon="mdi-minus-box" size="x-large" color="pink-darken-2"></VIcon>
+    <VBtn v-show="isAdministrator">
+      <VIcon
+        class="rounded-circle"
+        icon="mdi-minus-box"
+        size="x-large"
+        color="pink-darken-2"
+      ></VIcon>
 
       Delete
     </VBtn>
@@ -34,6 +49,8 @@
 import * as myTypes from "~/types";
 
 const isOpenAddDialog = ref(false);
+const isAdministrator = ref(false);
+
 const onClickLogoutBtn = () => {
   console.log("onLogout");
   signOutUser();
@@ -44,6 +61,19 @@ const onClickAddBtn = () => {
   console.log("onAdd");
 };
 
-const { signOutUser } = useFirebaseUser();
+onMounted(() => {
+  const isUserClass = getUserClass();
+  console.log("user class: ", isUserClass);
+
+  if (isUserClass == myTypes.eUserClass.Administrator) {
+    isAdministrator.value = true;
+  } else {
+    isAdministrator.value = false;
+  }
+
+  console.log(isAdministrator.value);
+});
+
+const { signOutUser, getUserClass } = useFirebaseUser();
 </script>
 <style></style>
