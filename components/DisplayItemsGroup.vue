@@ -32,10 +32,43 @@
         </VCard>
       </VSlideGroupItem>
     </VSlideGroup>
+    <VPagination length="5" />
   </VSheet>
 </template>
 
 <script setup lang="ts">
-//import * as myTypes from "~/types";
+import * as myTypes from "~/types";
+
+const props = defineProps({
+  exercise: { type: Number as PropType<myTypes.eExerciseType>, required: true },
+});
+
 const model = ref("");
+const page = ref(0);
+const itemCount = ref(15);
+const sortType = ref("");
+const images: Ref<myTypes.iImageInfo[]> = ref([]);
+
+onMounted(async () => {
+  const queryCondition: myTypes.iQueryImageInfo = {
+    page: page.value,
+    itemCount: itemCount.value,
+    exerciseType: props.exercise,
+    orderCondition: "createTime",
+  };
+
+  const totalItemCount = await getImageCount(queryCondition);
+
+  console.log("onMount count: ", totalItemCount);
+
+  const resItems = await getImageInfoList(queryCondition);
+
+  resItems.forEach((item) => {
+    images.value.push(item);
+  });
+
+  console.log("onMount res: ", images.value);
+});
+
+const { getImageInfoList, getImageCount } = useFirebaseImage();
 </script>

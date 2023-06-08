@@ -7,6 +7,10 @@ import {
   query,
   where,
   Firestore,
+  orderBy,
+  startAt,
+  limit,
+  getCountFromServer,
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
@@ -31,6 +35,7 @@ export const useFirebaseImage = () => {
         exerciseType: _exercieseType,
         creator: userId,
         createTime: new Date(),
+        lastupdateTIme: new Date(),
         contents: _contents,
         url: [],
       };
@@ -56,6 +61,52 @@ export const useFirebaseImage = () => {
       const docRef = await addDoc(colRef, imageInfo);
 
       console.log("result: ", docRef);
+    },
+
+    getImageInfoList: async (
+      queryCondition: myTypes.iQueryImageInfo
+    ): Promise<myTypes.iImageInfo[]> => {
+      const { $firestore } = useNuxtApp();
+
+      console.log("getImageInfoList(query): ", queryCondition);
+
+      const startIndex = queryCondition.itemCount * queryCondition.page;
+
+      const queryImageInfo = query(
+        collection($firestore as Firestore, "image-info"),
+        where("exerciseType", "==", queryCondition.exerciseType),
+        orderBy(queryCondition.orderCondition),
+        startAt(startIndex),
+        limit(queryCondition.itemCount)
+      );
+      1;
+
+      const resDocs = await getDocs(queryImageInfo);
+
+      const resItems: Array<myTypes.iImageInfo> = [];
+
+      resDocs.docs.forEach((doc) => {
+        resItems.push(doc.data() as myTypes.iImageInfo);
+      });
+
+      return resItems;
+    },
+
+    getImageCount: async (
+      queryCondition: myTypes.iQueryImageInfo
+    ): Promise<number> => {
+      const { $firestore } = useNuxtApp();
+
+      const queryImageInfo = query(
+        collection($firestore as Firestore, "image-info"),
+        where("exerciseType", "==", queryCondition.exerciseType)
+      );
+
+      const snapshot = await getCountFromServer(queryImageInfo);
+
+      const { count } = snapshot.data();
+
+      return count;
     },
   };
 };

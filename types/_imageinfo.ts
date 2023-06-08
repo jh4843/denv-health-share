@@ -39,6 +39,7 @@ export interface iImageInfo {
   exerciseType: eExerciseType;
   creator: string;
   createTime: Date;
+  lastupdateTIme: Date;
   contents: string;
   url: string[];
 }

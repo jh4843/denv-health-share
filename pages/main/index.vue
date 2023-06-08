@@ -2,12 +2,26 @@
   <VContainer fluid class="bg-main-img fill-height">
     <VCol class="fill-height">
       <VCol class="fill-height">
-        <DisplayItemsGroup class="h-auto"></DisplayItemsGroup>
-        <DisplayItemsGroup class="h-auto"></DisplayItemsGroup>
-        <DisplayItemsGroup class="h-auto"></DisplayItemsGroup>
-        <DisplayItemsGroup class="h-auto"></DisplayItemsGroup>
-        <DisplayItemsGroup class="h-auto"></DisplayItemsGroup>
-        <DisplayItemsGroup class="h-auto"></DisplayItemsGroup>
+        <DisplayItemsGroup
+          :exercise="squart"
+          class="h-auto mb-2"
+        ></DisplayItemsGroup>
+        <DisplayItemsGroup
+          :exercise="lunge"
+          class="h-auto mb-2"
+        ></DisplayItemsGroup>
+        <DisplayItemsGroup
+          :exercise="bench"
+          class="h-auto mb-2"
+        ></DisplayItemsGroup>
+        <DisplayItemsGroup
+          :exercise="running"
+          class="h-auto mb-2"
+        ></DisplayItemsGroup>
+        <DisplayItemsGroup
+          :exercise="etc"
+          class="h-auto mb-2"
+        ></DisplayItemsGroup>
       </VCol>
     </VCol>
   </VContainer>
@@ -51,6 +65,12 @@ import * as myTypes from "~/types";
 
 const isOpenAddDialog = ref(false);
 const isAdministrator = ref(false);
+
+const squart = ref(myTypes.eExerciseType.Squat);
+const lunge = ref(myTypes.eExerciseType.Lunge);
+const bench = ref(myTypes.eExerciseType.Bench);
+const running = ref(myTypes.eExerciseType.Running);
+const etc = ref(myTypes.eExerciseType.Etc);
 
 const onClickLogoutBtn = () => {
   console.log("onLogout");
