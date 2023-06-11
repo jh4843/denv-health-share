@@ -106,7 +106,7 @@ const itemContents = computed({
     return (item: myTypes.iImageInfo) => {
       const dttm = new Date(item.createTime.toDate());
       const dateString =
-        dttm.getFullYear() + "-" + dttm.getMonth() + "-" + dttm.getDay();
+        dttm.getFullYear() + "-" + dttm.getMonth() + "-" + dttm.getDate();
 
       const time = dttm.getHours() + ":" + dttm.getMinutes();
 
