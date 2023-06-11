@@ -97,15 +97,18 @@ const userClass = ref(
 const userId = ref("");
 const password = ref("");
 
-const onClickSignUpButton = (event: Event) => {
+const onClickSignUpButton = async (event: Event) => {
   let userInfo: myTypes.iUserInfo = {
     userClass: userClass.value.id,
     userId: userId.value,
     password: password.value,
   };
-  let res = signUpUser(userInfo);
+  let res = await signUpUser(userInfo);
 
-  console.log("onClickSignUpButton: ", res);
+  if (res == true) {
+    const router = useRouter();
+    router.push({ path: "/accounts/signin" });
+  }
 };
 
 const { signUpUser } = useFirebaseUser();

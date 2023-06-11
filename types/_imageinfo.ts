@@ -38,6 +38,7 @@ export function getExcerciseTypeItem(
 }
 
 export interface iImageInfo {
+  id?: string;
   exerciseType: eExerciseType;
   creator: string;
   createTime: Timestamp;

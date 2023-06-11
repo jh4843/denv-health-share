@@ -1,5 +1,6 @@
 import * as myTypes from "~/types";
 import {
+  doc,
   getDocs,
   addDoc,
   setDoc,
@@ -9,15 +10,25 @@ import {
   Firestore,
   orderBy,
   startAt,
+  deleteDoc,
   limit,
   getCountFromServer,
   Timestamp,
   startAfter,
+  getDoc,
 } from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
+import { url } from "inspector";
 
 export const useFirebaseImage = () => {
   return {
+    // Add
     uploadImages: async (
       files: Array<File>,
       _exercieseType: myTypes.eExerciseType,
@@ -62,11 +73,15 @@ export const useFirebaseImage = () => {
 
       const colRef = collection($firestore as Firestore, "image-info");
 
+      imageInfo.id = colRef.id;
+      console.log("id:", colRef.id);
+
       const docRef = await addDoc(colRef, imageInfo);
 
       console.log("result: ", docRef);
     },
 
+    // Get
     getImageInfoList: async (
       queryCondition: myTypes.iQueryImageInfo
     ): Promise<myTypes.iImageInfo[]> => {
@@ -89,24 +104,14 @@ export const useFirebaseImage = () => {
         curPageIndex++;
         const resDocs = await getDocs(queryImageInfo);
 
-        console.log(
-          "index search ",
-          queryImageInfo,
-          curPageIndex,
-          lastPageIndex
-        );
-
         if (curPageIndex >= lastPageIndex) {
           resDocs.docs.forEach((doc) => {
             resItems.push(doc.data() as myTypes.iImageInfo);
           });
-          console.log("res: ", resItems, curPageIndex, lastPageIndex);
           break;
         } else {
           const lastSnapshop = resDocs.docs[resDocs.docs.length - 1];
           const lastItem = lastSnapshop.data() as myTypes.iImageInfo;
-
-          console.log("tt: ", lastSnapshop.data(), curPageIndex);
 
           queryImageInfo = query(
             collection($firestore as Firestore, "image-info"),
@@ -117,8 +122,6 @@ export const useFirebaseImage = () => {
           );
         }
       }
-
-      console.log("res: ", resItems);
 
       return resItems;
     },
@@ -138,6 +141,35 @@ export const useFirebaseImage = () => {
       const { count } = snapshot.data();
 
       return count;
+    },
+
+    // Delete
+    deleteImage: async (item: myTypes.iImageInfo): Promise<boolean> => {
+      const storage = getStorage();
+
+      for (const url of item.url) {
+        const storageRef = ref(storage, url);
+        deleteObject(storageRef);
+      }
+
+      const { $firestore } = useNuxtApp();
+
+      const colRef = collection($firestore as Firestore, "image-info");
+
+      const queryTarget = query(
+        collection($firestore as Firestore, "image-info"),
+        where("url", "array-contains", item.url[0])
+      );
+
+      const snapshot = await getDocs(queryTarget);
+
+      snapshot.docs.forEach(async (doc) => {
+        await deleteDoc(doc.ref);
+      });
+
+      console.log("Complete");
+
+      return true;
     },
   };
 };
