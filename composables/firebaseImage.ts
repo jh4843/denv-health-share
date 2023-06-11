@@ -11,6 +11,8 @@ import {
   startAt,
   limit,
   getCountFromServer,
+  Timestamp,
+  startAfter,
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
@@ -31,11 +33,13 @@ export const useFirebaseImage = () => {
         userId = "";
       }
 
+      const now = Timestamp.now();
+
       let imageInfo: myTypes.iImageInfo = {
         exerciseType: _exercieseType,
         creator: userId,
-        createTime: new Date(),
-        lastupdateTIme: new Date(),
+        createTime: now,
+        lastupdateTIme: now,
         contents: _contents,
         url: [],
       };
@@ -70,24 +74,51 @@ export const useFirebaseImage = () => {
 
       console.log("getImageInfoList(query): ", queryCondition);
 
-      const startIndex = queryCondition.itemCount * queryCondition.page;
-
-      const queryImageInfo = query(
+      let queryImageInfo = query(
         collection($firestore as Firestore, "image-info"),
         where("exerciseType", "==", queryCondition.exerciseType),
         orderBy(queryCondition.orderCondition),
-        startAt(startIndex),
-        limit(queryCondition.itemCount)
+        limit(queryCondition.countPerPage)
       );
-      1;
 
-      const resDocs = await getDocs(queryImageInfo);
-
+      let curPageIndex = 0;
       const resItems: Array<myTypes.iImageInfo> = [];
+      let lastPageIndex = queryCondition.page;
 
-      resDocs.docs.forEach((doc) => {
-        resItems.push(doc.data() as myTypes.iImageInfo);
-      });
+      while (curPageIndex < lastPageIndex) {
+        curPageIndex++;
+        const resDocs = await getDocs(queryImageInfo);
+
+        console.log(
+          "index search ",
+          queryImageInfo,
+          curPageIndex,
+          lastPageIndex
+        );
+
+        if (curPageIndex >= lastPageIndex) {
+          resDocs.docs.forEach((doc) => {
+            resItems.push(doc.data() as myTypes.iImageInfo);
+          });
+          console.log("res: ", resItems, curPageIndex, lastPageIndex);
+          break;
+        } else {
+          const lastSnapshop = resDocs.docs[resDocs.docs.length - 1];
+          const lastItem = lastSnapshop.data() as myTypes.iImageInfo;
+
+          console.log("tt: ", lastSnapshop.data(), curPageIndex);
+
+          queryImageInfo = query(
+            collection($firestore as Firestore, "image-info"),
+            where("exerciseType", "==", queryCondition.exerciseType),
+            orderBy(queryCondition.orderCondition),
+            startAfter(lastSnapshop),
+            limit(queryCondition.countPerPage)
+          );
+        }
+      }
+
+      console.log("res: ", resItems);
 
       return resItems;
     },

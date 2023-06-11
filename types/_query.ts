@@ -2,10 +2,10 @@ import * as imgType from "./_imageinfo";
 
 export interface iQueryBase {
   page: number;
-  itemCount: number;
+  countPerPage: number;
 }
 
-export type tOrderConditionImage = "createTime" | "creator" | "lastupdateTIme";
+export type tOrderConditionImage = "createTime" | "creator" | "lastupdateTime";
 
 export interface iQueryImageInfo extends iQueryBase {
   exerciseType: imgType.eExerciseType;

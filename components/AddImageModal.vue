@@ -33,7 +33,10 @@
           class="ma-5 gradient upload"
           rounded="xl"
           @click="onClickUploadButton"
-          >Upload
+        >
+          <div v-show="!isSending">Upload</div>
+          <VProgressCircular v-show="isSending" indeterminate color="purple">
+          </VProgressCircular>
         </VBtn>
         <VBtn
           min-width="64px"
@@ -61,6 +64,7 @@ const excerciseType = ref(
 const fileList = ref([]);
 const textContents = ref("");
 const isMultiple = ref(true);
+const isSending = ref(false);
 
 const fileRules = reactive([
   (value: Array<any>) => {
@@ -104,7 +108,16 @@ const value = computed({
 const onClickUploadButton = async (event: Event) => {
   console.log("onClickUploadButton: ", fileList.value);
 
-  uploadImages(fileList.value, excerciseType.value.id, textContents.value);
+  isSending.value = true;
+
+  await uploadImages(
+    fileList.value,
+    excerciseType.value.id,
+    textContents.value
+  );
+
+  isSending.value = false;
+  value.value = false;
 };
 
 const onChanges = (event: Event) => {

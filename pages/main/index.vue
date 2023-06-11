@@ -82,6 +82,16 @@ const onClickAddBtn = () => {
   console.log("onAdd");
 };
 
+watch(
+  () => isOpenAddDialog.value,
+  async (newValue, oldVlaue) => {
+    if (newValue == false) {
+      await reloadNuxtApp();
+      console.log("refresh");
+    }
+  }
+);
+
 onMounted(() => {
   const isUserClass = getUserClass();
   console.log("user class: ", isUserClass);

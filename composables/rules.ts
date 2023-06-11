@@ -11,7 +11,7 @@ export const useFormRules = () => {
     },
 
     rulePassLen: (v: string): boolean | string => {
-      return (!!v && v.length >= 6) || "Password must be 6 chars or more";
+      return (!!v && v.length >= 4) || "Password must be 4 chars or more";
     },
 
     rulePhoneNumber: (v: string): boolean | string => {

@@ -1,3 +1,5 @@
+import { Timestamp } from "@firebase/firestore";
+
 export enum eExerciseType {
   Squat = 0,
   Lunge,
@@ -38,8 +40,8 @@ export function getExcerciseTypeItem(
 export interface iImageInfo {
   exerciseType: eExerciseType;
   creator: string;
-  createTime: Date;
-  lastupdateTIme: Date;
+  createTime: Timestamp;
+  lastupdateTIme: Timestamp;
   contents: string;
   url: string[];
 }

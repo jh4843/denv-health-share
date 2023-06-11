@@ -50,6 +50,8 @@ a {
   }
 }
 
+$label-color: black;
+
 // Override the textfield's radius
 .v-text-field {
   .v-field__outline__start {
@@ -70,6 +72,11 @@ a {
   display: inline-block;
   cursor: pointer;
 }
+
+.bg-success {
+  background-color: red;
+}
+
 // Theme gradients
 .gradient {
   &.primary {
